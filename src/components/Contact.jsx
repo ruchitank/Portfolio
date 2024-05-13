@@ -17,10 +17,54 @@ const Contact = () => {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = () => {}
+  const handleChange = (e) => {
+    const { target } = e;
+    const { name, value } = target;
 
-  const handleSubmit = () => {}
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    emailjs
+      .send(
+        "service_pjpztge",
+        "template_8t0iif9",
+        {
+          from_name: form.name,
+          to_name: "Ruchi",
+          from_email: form.email,
+          to_email: "tankruchi27@gmail.com",
+          message: form.message,
+        },
+        "IBa9WivlWOC8xEglT"
+      )
+      .then(
+        () => {
+          setLoading(false);
+          alert("Thank you. I will get back to you as soon as possible.");
+
+          setForm({
+            name: "",
+            email: "",
+            message: "",
+          });
+        },
+        (error) => {
+          setLoading(false);
+          console.error(error);
+
+          alert("Ahh, something went wrong. Please try again.");
+        }
+      );
+  };
+
+  
   return (
     <div className='xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden'>
       <motion.div
